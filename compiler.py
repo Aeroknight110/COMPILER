@@ -1,6 +1,6 @@
 import sys
 
-norw = 11      #number of reserved words
+norw = 21      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -273,63 +273,78 @@ def statement(tx):
         if sym != "THEN":
             error(16)
         getsym()
+ #################################################
         statement(tx)
-#################################################
-    elif sym == "THEN":
-        getsym()
-        statement(tx)
-        getsym()
-    elif sym == "ELSE":
-        getsym()
-        statement(tx)
-        getsym()
+        if sym == "ELSE":
+            getsym()
+            statement(tx)
+            
     elif sym == "REPEAT":
         getsym()
-        statement(sym)
-        getsym()
-        if sym!= ";":
+        statement(tx)     
+        if sym!= "semicolon":
             error(17)
-        getsym()
-        statement(sym)
-        getsym()
-    elif sym == "UNTIL" :
+        if sym!= "semicolon":
+            error()
+        while True:               #makeshift do while in python
+            getsym()
+            statement(tx)
+            if sym != "semicolon":
+                break                
+        if sym != "UNTIL" :
+            error(20)
         getsym()
         condition(sym)
     elif sym == "FOR":
         getsym()
-        if sym == "ident" :
-            getsym()
-            if sym == ":=" :
-                getsym()
-                expression(tx)
-                getsym()
-            if sym == "TO" or "DOWNTO" :
-                expression(tx)
-                getsym()
-                if sym!= "DO":
-                    error(19)
-                statement(tx)
+        if sym != "ident":
+           error(4)
+        #i = position(tx, id)
+        #if id == 0:
+            #error(11)
+        getsym()
+        if sym != "becomes":
+            error(13)
+        getsym()
+        expression(tx)        
+        if sym != "TO" or "DOWNTO" :
+            error(20)
+        getsym()    
+        expression(tx)        
+        if sym!= "DO":
+            error(19)
+        getsym()    
+        statement(tx)
     elif sym == "WRITE" :
-        getsmy()
-        if sym == "(" :
-            getsym()
-            expression(tx)
-            get sym()
-            else sym == ";" :   #(not sure about this line)
-        if sym == ")" :
-            expression(tx)
+        getsym()
+        if sym != "(" :
+            error()
+        getsym()
+        expression(tx)     
+        if sym !="(" :
+            error(1)
+        getsym()
+        expression(tx)
+        if sym!= ",":
+            error()
+        getsym()
+        expression(tx)
+        if sym != ")" :
+            error(22)
+        expression(tx)
 
     elif sym == "CASE" :
         getsym()
         expression(tx)
-        if sym == "OF" :
-            getsym()
-        if sym == "Number" or "Constant" :
-            get sym()
-        if sym == "Statement"
-            getsym()
-        if sym = "CEND"
-            getsym()
+        if sym != "OF" :
+            error(1)
+        getsym()   
+        if sym!= 'number' and sym != 'constant' :
+            error(2)
+        getsym()
+        Statement(tx)         
+        if sym != "CEND":
+            error(1)
             
             
                 
@@ -429,6 +444,18 @@ rword.append('PROCEDURE')
 rword.append('THEN')
 rword.append('VAR')
 rword.append('WHILE')
+rword.append('ELSE')
+rword.append('REPEAT')
+rword.append('UNTIL')
+rword.append('FOR')
+rword.append('TO')
+rword.append('DOWNTO')
+rword.append('CASE')
+rword.append('OF')
+rword.append('CEND')
+rword.append('WRITE')
+rword.append('WRITELN')
+
 
 ssym = {'+' : "plus",
              '-' : "minus",
