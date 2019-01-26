@@ -288,8 +288,8 @@ def statement(tx):
         expression(tx)
         print(sym)
         if sym != "TO" and sym != "DOWNTO"  :    #why is it to and downto and not to or downto? and why is the To and down to in the elseif?
-                print(19)
-                error(19)
+                print(19)                        #the reason for and instead of or is because we are looking for what isn't To or DownTo, if we chose or, it would count would include To and DownTO      
+                error(19)                        #the reason why to and down to are here because they are part of the same statement line
         getsym()    
         expression(tx)
         getsym()
